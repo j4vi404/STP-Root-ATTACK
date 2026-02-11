@@ -267,7 +267,7 @@ BPDU Fields:
 Switch(config)# spanning-tree portfast bpduguard default
 
 ! Habilitar BPDU Guard por interfaz
-SW-1(config)# interface range GigabitEthernet0/1-23
+SW-1(config)# interface range tEthernet1/0-5
 SW-1(config-if-range)# spanning-tree portfast
 SW-1(config-if-range)# spanning-tree bpduguard enable
 
@@ -398,8 +398,8 @@ SW-1(config-if)# udld port aggressive
 !==================================================
 
 ! 1. Configurar Root Bridge con prioridad baja
-spanning-tree vlan 1-100 root primary
-spanning-tree vlan 1-100 priority 0
+spanning-tree vlan 20 root primary
+spanning-tree vlan 20 priority 0
 
 ! 2. Configurar Root Secondary (backup)
 ! (En segundo switch más crítico)
