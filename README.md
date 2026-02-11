@@ -57,7 +57,7 @@ pip install scapy
 git clone https://github.com/j4vi404/STP-Root-ATTACK.git
 cd STP-Root-Attack
 chmod +x stp_attack.py
-sudo python3 stp_attack.py
+sudo python3 STP.py
 ```
 
 ## Características
@@ -468,7 +468,7 @@ snmp-server enable traps port-security
 show spanning-tree root
 
 ! Ver estado STP por VLAN
-show spanning-tree vlan 1
+show spanning-tree vlan 20
 
 ! Verificar inconsistencias
 show spanning-tree inconsistentports
@@ -480,7 +480,7 @@ show spanning-tree summary
 show spanning-tree bpduguard
 
 ! Ver estadísticas de interfaces
-show spanning-tree interface GigabitEthernet0/1 detail
+show spanning-tree interface Ethernet1/0 detail
 
 ! Verificar Storm Control
 show storm-control
@@ -493,14 +493,14 @@ show spanning-tree guard
 
 ### Plan de Respuesta a Incidentes
 
-#### FASE 1: DETECCIÓN (0-5 minutos)
+#### FASE 1: DETECCIÓN 
 1. Sistema detecta cambio de Root Bridge inesperado
 2. Alerta automática SNMP trap o Syslog
 3. Verificar con `show spanning-tree root`
 4. Identificar nuevo Root Bridge y MAC address
 5. Localizar puerto físico del atacante
 
-#### FASE 2: CONTENCIÓN (5-15 minutos)
+#### FASE 2: CONTENCIÓN 
 1. **Shutdown inmediato** del puerto sospechoso
    ```
    Sw-1(config)# interface GigabitEthernet0/X
@@ -511,14 +511,14 @@ show spanning-tree guard
 4. Verificar que Root Bridge legítimo recupere control
 5. Documentar Bridge ID y MAC del atacante
 
-#### FASE 3: ERRADICACIÓN (15-30 minutos)
+#### FASE 3: ERRADICACIÓN 
 1. Identificar dispositivo físico conectado al puerto
 2. Desconectar dispositivo atacante de la red
 3. Analizar logs para determinar duración del ataque
 4. Revisar configuración de todos los switches
 5. Verificar integridad de configuraciones STP
 
-#### FASE 4: RECUPERACIÓN (30-60 minutos)
+#### FASE 4: RECUPERACIÓN 
 1. Forzar reconvergencia STP si es necesario
    ```
    SW-1# clear spanning-tree detected-protocols
@@ -528,7 +528,7 @@ show spanning-tree guard
 4. Restaurar puertos a estado operacional
 5. Monitoreo intensivo durante 24 horas
 
-#### FASE 5: MEJORAS (1-2 semanas)
+#### FASE 5: MEJORAS 
 1. Documentar el incidente completo
 2. Implementar controles faltantes:
    - BPDU Guard en TODOS los puertos de acceso
