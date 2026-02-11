@@ -4,6 +4,9 @@ Network Security Tool
 
 Herramienta automatizada para demostración de ataques STP Root Bridge Manipulation en entornos de laboratorio controlados
 
+---
+video demostrativo: https://youtu.be/6M_IORB1LWo
+---
 ## 📋 Tabla de Contenidos
 - [Objetivo del Script](#-objetivo)
 - [Características Principales](#características)
