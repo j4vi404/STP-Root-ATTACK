@@ -25,7 +25,7 @@ Las capturas incluidas en este repositorio documentan el proceso completo del la
 
 ---
 ## Configuración STP antes del ataque
-  <img width="1387" height="494" alt="image" src="https://github.com/user-attachments/assets/23f25e4f-46f5-491c-aef7-07c330992ba6" />
+<img width="1078" height="539" alt="image" src="https://github.com/user-attachments/assets/a8864076-0675-4a6a-a90c-32b251f01de8" />
 
 ---
 
@@ -36,11 +36,11 @@ Las capturas incluidas en este repositorio documentan el proceso completo del la
 ---
 ## Puerto del Switch como nuevo Root Bridge
   
-<img width="1581" height="417" alt="image" src="https://github.com/user-attachments/assets/8cc99241-8aec-430d-b826-45f709096ab6" />
+<img width="1317" height="619" alt="image" src="https://github.com/user-attachments/assets/290a6666-b4a3-4556-8f06-fe5a0d6b0f41" />
 
 ---
-## Tráfico STP interceptado (BPDUs)
----
+## Tráfico STP interceptado 
+
 <img width="842" height="565" alt="image" src="https://github.com/user-attachments/assets/3a6571bc-1255-4ed0-95a0-43148281574f" />
 
 ---
