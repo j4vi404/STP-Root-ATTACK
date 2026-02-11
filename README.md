@@ -56,7 +56,7 @@ pip install scapy
 ```bash
 git clone https://github.com/j4vi404/STP-Root-ATTACK.git
 cd STP-Root-Attack
-chmod +x stp_attack.py
+chmod +x STP.py
 sudo python3 STP.py
 ```
 
@@ -288,7 +288,7 @@ SW-1(config-if)# spanning-tree portfast
 
 ```cisco
 ! Configurar Root Guard en puertos uplink
-SW-1(config)# interface GigabitEthernet0/24
+SW-1(config)# interface Ethernet1/0
 SW-1(config-if)# spanning-tree guard root
 
 ! Verificar Root Guard
@@ -307,22 +307,22 @@ SW-1(config-if)# spanning-tree guard root
 
 ```cisco
 ! Configurar Root Primary (prioridad 24576)
-SW-1(config)# spanning-tree vlan 1 root primary
+SW-1(config)# spanning-tree vlan 20 root primary
 
 ! Configurar Root Secondary (prioridad 28672)
-SW-1(config)# spanning-tree vlan 1 root secondary
+SW-1(config)# spanning-tree vlan 20 root secondary
 
 ! Configuración manual de prioridad
-SW-1(config)# spanning-tree vlan 1 priority 4096
+SW-1(config)# spanning-tree vlan 20 priority 4096
 
 ! Verificar configuración
-SW-1# show spanning-tree vlan 1
+SW-1# show spanning-tree vlan 20
 ```
 
 **Configuración Arista (EOS):**
 ```
 ! Configurar prioridad del bridge
-SW-1(config)# spanning-tree vlan 1 priority 4096
+SW-1(config)# spanning-tree vlan 20 priority 4096
 ```
 
 #### 4. BPDU Filter
@@ -333,7 +333,7 @@ SW-1(config)# spanning-tree vlan 1 priority 4096
 SW-1(config)# spanning-tree portfast bpdufilter default
 
 ! Habilitar BPDU Filter por interfaz
-SW-1(config)# interface GigabitEthernet0/10
+SW-1(config)# interface Ethernet1/0
 SW-1(config-if)# spanning-tree bpdufilter enable
 ```
 
@@ -347,7 +347,7 @@ SW-1(config-if)# spanning-tree bpdufilter enable
 SW-1(config)# spanning-tree loopguard default
 
 ! Habilitar Loop Guard por interfaz
-SW-1(config)# interface GigabitEthernet0/24
+SW-1(config)# interface Ethernet1/0
 SW-1(config-if)# spanning-tree guard loop
 ```
 
@@ -356,7 +356,7 @@ SW-1(config-if)# spanning-tree guard loop
 
 ```cisco
 ! Configurar Storm Control
-SW-1(config)# interface range GigabitEthernet0/1-23
+SW-1(config)# interface range Ethernet1/0
 SW-1(config-if-range)# storm-control broadcast level 10.00
 SW-1(config-if-range)# storm-control multicast level 10.00
 SW-1(config-if-range)# storm-control action shutdown
@@ -369,7 +369,7 @@ SW-1# show storm-control
 **Limita direcciones MAC y previene spoofing**
 
 ```cisco
-SW-1(config)# interface range GigabitEthernet0/1-23
+SW-1(config)# interface range Ethernet1/0
 SW-1(config-if-range)# switchport port-security
 SW-1(config-if-range)# switchport port-security maximum 3
 SW-1(config-if-range)# switchport port-security violation shutdown
@@ -384,7 +384,7 @@ SW-1(config-if-range)# switchport port-security mac-address sticky
 SW-1(config)# udld enable
 
 ! Habilitar UDLD agresivo en enlaces críticos
-SW-1(config)# interface GigabitEthernet0/24
+SW-1(config)# interface Ethernet1/0
 SW-1(config-if)# udld port aggressive
 ```
 
@@ -411,7 +411,7 @@ spanning-tree loopguard default
 udld aggressive
 
 ! 4. Configurar puertos de acceso
-interface range GigabitEthernet0/1-23
+interface range Ethernet1/0
  description Access Ports - Usuarios
  switchport mode access
  switchport access vlan 20
@@ -424,7 +424,7 @@ interface range GigabitEthernet0/1-23
  switchport port-security violation shutdown
 
 ! 5. Configurar puertos uplink/trunk
-interface GigabitEthernet0/24
+interface Ethernet1/2-5
  description Uplink to Core Switch
  switchport trunk encapsulation dot1q
  switchport mode trunk
@@ -432,14 +432,14 @@ interface GigabitEthernet0/24
  udld port aggressive
 
 ! 6. Deshabilitar puertos no utilizados
-interface range GigabitEthernet0/25-48
+interface range Ethernet1/0-5
  shutdown
  description UNUSED - Security Policy
 
 ! 7. Logging y monitoreo
 logging buffered 51200 informational
 logging trap notifications
-logging source-interface Vlan1
+logging source-interface Vlan 20 
 logging host 192.168.1.100
 
 ! 8. SNMP para monitoreo (opcional)
@@ -503,7 +503,7 @@ show spanning-tree guard
 #### FASE 2: CONTENCIÓN 
 1. **Shutdown inmediato** del puerto sospechoso
    ```
-   Sw-1(config)# interface GigabitEthernet0/X
+   Sw-1(config)# interface EthernetX/X
    Sw-1(config-if)# shutdown
    ```
 2. Aislar switch atacante de la topología
