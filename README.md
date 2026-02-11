@@ -19,30 +19,31 @@ El objetivo de este script es simular, en un entorno de laboratorio controlado, 
 ## 🖼️ Capturas de Pantalla
 Las capturas incluidas en este repositorio documentan el proceso completo del laboratorio:
 
-- **Topología de red del escenario**
+## Topología de red del escenario
   
-  ![Topología](screenshots/topologia.png)
+<img width="809" height="434" alt="image" src="https://github.com/user-attachments/assets/0d6e3f83-2117-489d-8eb4-442d19b6b1cf" />
 
-- **Configuración STP antes del ataque**
+---
+## Configuración STP antes del ataque
+  <img width="1387" height="494" alt="image" src="https://github.com/user-attachments/assets/23f25e4f-46f5-491c-aef7-07c330992ba6" />
+
+---
+
+## Ejecución del ataque STP Root Attack
   
-  ![STP Before](screenshots/stp_before.png)
+ <img width="684" height="826" alt="image" src="https://github.com/user-attachments/assets/bc516d8f-1ced-4ef4-a726-e2253d40f230" />
 
-- **Ejecución del ataque STP Root Attack**
+---
+## Puerto del Switch como nuevo Root Bridge
   
-  ![Ataque STP](screenshots/ataque_stp.png)
+<img width="1581" height="417" alt="image" src="https://github.com/user-attachments/assets/8cc99241-8aec-430d-b826-45f709096ab6" />
 
-- **Switch atacante como nuevo Root Bridge**
-  
-  ![New Root](screenshots/new_root_bridge.png)
+---
+## Tráfico STP interceptado (BPDUs)
+---
+<img width="842" height="565" alt="image" src="https://github.com/user-attachments/assets/3a6571bc-1255-4ed0-95a0-43148281574f" />
 
-- **Tráfico STP interceptado (BPDUs)**
-  
-  ![Wireshark](screenshots/wireshark_bpdu.png)
-
-- **Cambios en la topología STP**
-  
-  ![Topology Change](screenshots/topology_change.png)
-
+---
 ## STP Root Attack - Bridge Priority Manipulation
 Script de Python que utiliza Scapy para realizar ataques de manipulación del protocolo Spanning Tree Protocol (STP) enviando BPDUs maliciosos con prioridad superior para convertirse en el Root Bridge.
 
@@ -53,7 +54,7 @@ pip install scapy
 
 ### Uso
 ```bash
-git clone https://github.com/tuusuario/STP-Root-Attack.git
+git clone https://github.com/j4vi404/STP-Root-ATTACK.git
 cd STP-Root-Attack
 chmod +x stp_attack.py
 sudo python3 stp_attack.py
@@ -122,38 +123,6 @@ El impacto principal del ataque es la capacidad de redirigir todo el tráfico in
 En un entorno real, este tipo de vulnerabilidad podría facilitar el acceso no autorizado a información confidencial, comprometer la integridad de comunicaciones corporativas y causar interrupciones severas del servicio. La implementación de controles como BPDU Guard, Root Guard, BPDU Filter y monitoreo activo permitiría reducir considerablemente la superficie de ataque.
 
 ---
-
-## 🌐 Topología de Red
-
-### Diagrama de Topología
-
-```
-                            Cloud My House
-                                  |
-                   +--------------+---------------+
-                   |                              |
-                e1/0                            e0/1
-          Kali Linux Atacante                 SW-Cloud
-           (STP Priority: 0)                    e0/0
-                e0/0                              |
-                   |                            e0/1
-                e1/0                              |
-                 SW-1 ----------PNET----------- R-SD
-               (ARISTA)         (ISP)         (Root Bridge Original)
-             [Priority: 32768]              [Priority: 32768]
-                e0/3 \                         e0/0
-                      \                          |
-                    e0/0                       e1/0
-                     SW-2                        |
-                   (ARISTA)                    SW-3
-             [Priority: 32768]               (ARISTA)
-                    e0/2 \         e0/2  e0/4  [Priority: 32768]
-                          \         |     |    / e1/2
-                         e0/0     e0/0  e0/0  /  e1/1
-                           |       |     |   /   e1/3
-                         USER    USER  USER USER
-```
-
 **Elementos de la red:**
 - **Cloud My House**: Conexión a Internet
 - **Kali Linux Atacante**: Switch malicioso con prioridad STP 0
@@ -164,27 +133,6 @@ En un entorno real, este tipo de vulnerabilidad podría facilitar el acceso no a
 - **R-SD**: Router/Switch con prioridad 32768 (Root Bridge original)
 - **PNET**: Proveedor de Internet (ISP)
 - **USER**: Dispositivos finales (4 clientes)
-
-### Estados STP
-
-#### Antes del Ataque
-| Dispositivo | Bridge ID | Prioridad | MAC Address | Rol |
-|-------------|-----------|-----------|-------------|-----|
-| R-SD | 32768.xxxx.xxxx.xxxx | 32768 | Original | **Root Bridge** |
-| SW-1 | 32768.xxxx.xxxx.xxxx | 32768 | Original | Designated |
-| SW-2 | 32768.xxxx.xxxx.xxxx | 32768 | Original | Designated |
-| SW-3 | 32768.xxxx.xxxx.xxxx | 32768 | Original | Designated |
-| SW-Cloud | 32768.xxxx.xxxx.xxxx | 32768 | Original | Designated |
-
-#### Después del Ataque
-| Dispositivo | Bridge ID | Prioridad | MAC Address | Rol |
-|-------------|-----------|-----------|-------------|-----|
-| **Atacante** | **0.0000.0000.0001** | **0** | **Falsa** | **🔴 NEW Root Bridge** |
-| R-SD | 32768.xxxx.xxxx.xxxx | 32768 | Original | Designated |
-| SW-1 | 32768.xxxx.xxxx.xxxx | 32768 | Original | Designated |
-| SW-2 | 32768.xxxx.xxxx.xxxx | 32768 | Original | Designated |
-| SW-3 | 32768.xxxx.xxxx.xxxx | 32768 | Original | Designated |
-| SW-Cloud | 32768.xxxx.xxxx.xxxx | 32768 | Original | Designated |
 
 ### Tabla de Interfaces
 
@@ -275,18 +223,6 @@ BPDU Fields:
   Forward Delay: 15
 ```
 
----
-
-### Dispositivos de Red Compatibles
-
-#### Switches
-| Fabricante | Modelos Soportados | Versión OS | Soporte STP | Estado |
-|------------|-------------------|------------|-------------|--------|
-| **Arista** | **7050/7280/7500** | **EOS 4.x+** | **802.1D/w/s** | **✅ Completo** |
-| Cisco | Catalyst 2960/3560/3750 | IOS 15.0+ | 802.1D/w/s | ✅ Completo |
-| HP | ProCurve 2530/2920 | KB.16.x | 802.1D/w | ✅ Completo |
-| Juniper | EX2200/EX3300 | Junos 12.x+ | 802.1D/w/s | ✅ Completo |
-
 #### Protocolos STP Soportados
 | Protocolo | Estándar | Convergencia | Vulnerable a Root Attack |
 |-----------|----------|--------------|--------------------------|
@@ -331,9 +267,9 @@ BPDU Fields:
 Switch(config)# spanning-tree portfast bpduguard default
 
 ! Habilitar BPDU Guard por interfaz
-Switch(config)# interface range GigabitEthernet0/1-23
-Switch(config-if-range)# spanning-tree portfast
-Switch(config-if-range)# spanning-tree bpduguard enable
+SW-1(config)# interface range GigabitEthernet0/1-23
+SW-1(config-if-range)# spanning-tree portfast
+SW-1(config-if-range)# spanning-tree bpduguard enable
 
 ! Verificar configuración
 Switch# show spanning-tree summary
@@ -342,9 +278,9 @@ Switch# show spanning-tree summary
 **Configuración Arista (EOS):**
 ```
 ! Habilitar BPDU Guard en puertos de acceso
-switch(config)# interface Ethernet1-10
-switch(config-if-Et1-10)# spanning-tree bpduguard enable
-switch(config-if-Et1-10)# spanning-tree portfast
+SW-1(config)# interface Ethernet1/0
+SW-1(config-if)# spanning-tree bpduguard enable
+SW-1(config-if)# spanning-tree portfast
 ```
 
 #### 2. Root Guard
@@ -352,18 +288,18 @@ switch(config-if-Et1-10)# spanning-tree portfast
 
 ```cisco
 ! Configurar Root Guard en puertos uplink
-Switch(config)# interface GigabitEthernet0/24
-Switch(config-if)# spanning-tree guard root
+SW-1(config)# interface GigabitEthernet0/24
+SW-1(config-if)# spanning-tree guard root
 
 ! Verificar Root Guard
-Switch# show spanning-tree inconsistentports
+SW-1# show spanning-tree inconsistentports
 ```
 
 **Configuración Arista (EOS):**
 ```
 ! Habilitar Root Guard en uplinks
-switch(config)# interface Ethernet24
-switch(config-if-Et24)# spanning-tree guard root
+SW-1(config)# interface Ethernet0/2
+SW-1(config-if)# spanning-tree guard root
 ```
 
 #### 3. Bridge Priority Configuration
@@ -371,22 +307,22 @@ switch(config-if-Et24)# spanning-tree guard root
 
 ```cisco
 ! Configurar Root Primary (prioridad 24576)
-Switch(config)# spanning-tree vlan 1 root primary
+SW-1(config)# spanning-tree vlan 1 root primary
 
 ! Configurar Root Secondary (prioridad 28672)
-Switch(config)# spanning-tree vlan 1 root secondary
+SW-1(config)# spanning-tree vlan 1 root secondary
 
 ! Configuración manual de prioridad
-Switch(config)# spanning-tree vlan 1 priority 4096
+SW-1(config)# spanning-tree vlan 1 priority 4096
 
 ! Verificar configuración
-Switch# show spanning-tree vlan 1
+SW-1# show spanning-tree vlan 1
 ```
 
 **Configuración Arista (EOS):**
 ```
 ! Configurar prioridad del bridge
-switch(config)# spanning-tree vlan 1 priority 4096
+SW-1(config)# spanning-tree vlan 1 priority 4096
 ```
 
 #### 4. BPDU Filter
@@ -394,11 +330,11 @@ switch(config)# spanning-tree vlan 1 priority 4096
 
 ```cisco
 ! Habilitar BPDU Filter globalmente
-Switch(config)# spanning-tree portfast bpdufilter default
+SW-1(config)# spanning-tree portfast bpdufilter default
 
 ! Habilitar BPDU Filter por interfaz
-Switch(config)# interface GigabitEthernet0/10
-Switch(config-if)# spanning-tree bpdufilter enable
+SW-1(config)# interface GigabitEthernet0/10
+SW-1(config-if)# spanning-tree bpdufilter enable
 ```
 
 ⚠️ **Advertencia**: BPDU Filter es peligroso - usar solo en casos específicos
@@ -408,11 +344,11 @@ Switch(config-if)# spanning-tree bpdufilter enable
 
 ```cisco
 ! Habilitar Loop Guard globalmente
-Switch(config)# spanning-tree loopguard default
+SW-1(config)# spanning-tree loopguard default
 
 ! Habilitar Loop Guard por interfaz
-Switch(config)# interface GigabitEthernet0/24
-Switch(config-if)# spanning-tree guard loop
+SW-1(config)# interface GigabitEthernet0/24
+SW-1(config-if)# spanning-tree guard loop
 ```
 
 #### 6. Storm Control
@@ -420,24 +356,24 @@ Switch(config-if)# spanning-tree guard loop
 
 ```cisco
 ! Configurar Storm Control
-Switch(config)# interface range GigabitEthernet0/1-23
-Switch(config-if-range)# storm-control broadcast level 10.00
-Switch(config-if-range)# storm-control multicast level 10.00
-Switch(config-if-range)# storm-control action shutdown
+SW-1(config)# interface range GigabitEthernet0/1-23
+SW-1(config-if-range)# storm-control broadcast level 10.00
+SW-1(config-if-range)# storm-control multicast level 10.00
+SW-1(config-if-range)# storm-control action shutdown
 
 ! Verificar Storm Control
-Switch# show storm-control
+SW-1# show storm-control
 ```
 
 #### 7. Port Security
 **Limita direcciones MAC y previene spoofing**
 
 ```cisco
-Switch(config)# interface range GigabitEthernet0/1-23
-Switch(config-if-range)# switchport port-security
-Switch(config-if-range)# switchport port-security maximum 3
-Switch(config-if-range)# switchport port-security violation shutdown
-Switch(config-if-range)# switchport port-security mac-address sticky
+SW-1(config)# interface range GigabitEthernet0/1-23
+SW-1(config-if-range)# switchport port-security
+SW-1(config-if-range)# switchport port-security maximum 3
+SW-1(config-if-range)# switchport port-security violation shutdown
+SW-1(config-if-range)# switchport port-security mac-address sticky
 ```
 
 #### 8. UDLD (UniDirectional Link Detection)
@@ -445,11 +381,11 @@ Switch(config-if-range)# switchport port-security mac-address sticky
 
 ```cisco
 ! Habilitar UDLD globalmente
-Switch(config)# udld enable
+SW-1(config)# udld enable
 
 ! Habilitar UDLD agresivo en enlaces críticos
-Switch(config)# interface GigabitEthernet0/24
-Switch(config-if)# udld port aggressive
+SW-1(config)# interface GigabitEthernet0/24
+SW-1(config-if)# udld port aggressive
 ```
 
 ---
@@ -478,7 +414,7 @@ udld aggressive
 interface range GigabitEthernet0/1-23
  description Access Ports - Usuarios
  switchport mode access
- switchport access vlan 10
+ switchport access vlan 20
  spanning-tree portfast
  spanning-tree bpduguard enable
  storm-control broadcast level 10.00
@@ -567,8 +503,8 @@ show spanning-tree guard
 #### FASE 2: CONTENCIÓN (5-15 minutos)
 1. **Shutdown inmediato** del puerto sospechoso
    ```
-   Switch(config)# interface GigabitEthernet0/X
-   Switch(config-if)# shutdown
+   Sw-1(config)# interface GigabitEthernet0/X
+   Sw-1(config-if)# shutdown
    ```
 2. Aislar switch atacante de la topología
 3. Preservar evidencia (captura de tráfico, logs)
@@ -585,7 +521,7 @@ show spanning-tree guard
 #### FASE 4: RECUPERACIÓN (30-60 minutos)
 1. Forzar reconvergencia STP si es necesario
    ```
-   Switch# clear spanning-tree detected-protocols
+   SW-1# clear spanning-tree detected-protocols
    ```
 2. Verificar topología STP en todos los switches
 3. Confirmar que Root Bridge correcto está activo
@@ -601,30 +537,6 @@ show spanning-tree guard
 3. Actualizar políticas de seguridad
 4. Capacitación al equipo de networking
 5. Realizar pentest de validación
-
----
-
-### Reglas IDS/IPS para Detección
-
-**Snort Rules:**
-```
-# Detectar BPDUs con prioridad 0 (sospechoso)
-alert eth any any -> any any (msg:"STP Root Attack - Priority 0 Detected"; \
-  content:"|01 80 C2 00 00 00|"; offset:0; depth:6; \
-  content:"|00 00|"; offset:22; depth:2; \
-  classtype:network-scan; sid:1000001; rev:1;)
-
-# Detectar múltiples TCN (Topology Change Notifications)
-alert eth any any -> any any (msg:"STP Possible Attack - Multiple TCN"; \
-  content:"|01 80 C2 00 00 00|"; \
-  threshold: type threshold, track by_src, count 10, seconds 60; \
-  classtype:denial-of-service; sid:1000002; rev:1;)
-
-# Detectar BPDUs desde puertos de acceso (no deberían enviar)
-alert eth $HOME_NET any -> any any (msg:"STP BPDU from Access Port"; \
-  content:"|01 80 C2 00 00 00|"; offset:0; depth:6; \
-  classtype:policy-violation; sid:1000003; rev:1;)
-```
 
 ---
 
@@ -672,28 +584,6 @@ Este proyecto es **exclusivamente para fines educativos y de investigación** en
 El ataque STP Root Bridge puede causar **interrupciones severas del servicio** e incluso **colapso total de la red** si no se maneja adecuadamente. El autor no se hace responsable del mal uso de esta herramienta.
 
 Al utilizar este código, aceptas usar este conocimiento de manera ética y legal, y solo en redes donde tienes autorización explícita para realizar pruebas de seguridad.
-
----
-
-**📚 Referencias**
-- IEEE 802.1D - Media Access Control (MAC) Bridges
-- IEEE 802.1w - Rapid Reconfiguration (RSTP)
-- IEEE 802.1s - Multiple Spanning Trees (MSTP)
-- Cisco Catalyst Switch Configuration Guide
-- Arista EOS Configuration Guide - Spanning Tree
-- NIST SP 800-189 - Resilient Interdomain Traffic Exchange
-- Yersinia Tool Documentation (STP Attack Framework)
-
-**📧 Contacto**
-Para reportes de seguridad o consultas: alexis.minyete@example.com
-
----
-
-**🔗 Recursos Adicionales**
-- [Yersinia - Layer 2 Attack Framework](https://github.com/tomac/yersinia)
-- [Scapy STP Documentation](https://scapy.readthedocs.io/en/latest/layers/stp.html)
-- [Cisco STP Best Practices](https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/24062-146.html)
-- [Arista STP Configuration](https://www.arista.com/en/um-eos/eos-section-20-2-spanning-tree-protocol)
 
 ---
 
