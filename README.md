@@ -139,7 +139,7 @@ En un entorno real, este tipo de vulnerabilidad podría facilitar el acceso no a
 #### Kali Linux Atacante (STP Root Malicioso)
 | Interfaz | Dirección IP | Estado STP | Descripción |
 |----------|--------------|------------|-------------|
-| e0 | 192.168.1.50 | **Root** | Interfaz de ataque |
+| e0 | 15.0.7.2 | **Root** | Interfaz de ataque |
 | e1 | Acceso Cloud | Forwarding | Conexión a Internet |
 
 #### R-SD (Root Bridge Original)
@@ -181,7 +181,7 @@ En un entorno real, este tipo de vulnerabilidad podría facilitar el acceso no a
 | Parámetro | Valor | Descripción |
 |-----------|-------|-------------|
 | Protocolo STP | IEEE 802.1D | Spanning Tree Protocol estándar |
-| VLAN | 1 (default) | VLAN sin segmentación |
+| VLAN | 20 | VLAN Victima |
 | Hello Time | 2 segundos | Intervalo de envío de BPDUs |
 | Max Age | 20 segundos | Tiempo máximo de vida de BPDU |
 | Forward Delay | 15 segundos | Tiempo de transición entre estados |
